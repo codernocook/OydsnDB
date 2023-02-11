@@ -1,9 +1,5 @@
 const express = require("express");
 const fs = require("fs");
-const fsp = require("fs/promises")
-const cors = require("cors");
-const _ = require("lodash");
-const { v4: uuid } = require("uuid")
 let db = require("./database.json");
 
 let localdb = new Map(
@@ -131,6 +127,54 @@ app.delete("/del", (req, res) => {
             data: localdbdata || null,
             message: "sucessfully",
         })
+    } catch {
+        res.json({
+            status: false,
+            keyname: null,
+            data: null,
+            message: "failled",
+        })
+    }
+})
+
+app.post("/has", (req, res) => {
+    try {
+        // check if the db is exits
+        const execpath = `./database.json`
+        let decodeinfo = db;
+
+        try {
+            let test1 = req.body["key"]
+        } catch (err) {
+            res.json({
+                status: false,
+                keyname: null,
+                data: null,
+                message: "failled",
+            })
+        }
+
+        let localdbdata = null;
+
+        if (localdb.has(req.body["key"])) {
+            localdbdata = localdb.get(req.body["key"])
+        }
+
+        if (localdb.has(req.body["key"])) {
+            res.json({
+                status: true,
+                keyname: req.body["key"] || null,
+                data: localdbdata || null,
+                message: "sucessfully",
+            })
+        } else {
+            res.json({
+                status: false,
+                keyname: null,
+                data: null,
+                message: "failled",
+            })
+        }
     } catch {
         res.json({
             status: false,

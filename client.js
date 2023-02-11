@@ -1,0 +1,63 @@
+const db = "https://{your database website here}"
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
+module.exports = {
+    set(key, value, callback) {
+        if (db) {
+            let bodyfetch = {
+                "key": key,
+                "value": value
+            }
+            fetch(db + "/set", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                if (json) {
+                    if (json["status"] === false) callback(false);
+                    if (json["status"] === true) callback(json);
+                }
+            })
+        }
+    },
+    has(key, callback) {
+        if (db) {
+            let bodyfetch = {
+                "key": key,
+            }
+            fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                if (json) {
+                    if (json["status"] === false) callback(false);
+                    if (json["status"] === true) callback(true);
+                }
+            })
+        }
+    },
+    get(key, callback) {
+        if (db) {
+            let bodyfetch = {
+                "key": key,
+            }
+            fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                if (json) {
+                    if (json["status"] === false) callback(false);
+
+                    if (json["data"]) {
+                        callback(json["data"]);
+                    } else {
+                        callback(undefined);
+                    }
+                }
+            })
+        }
+    },
+    delete(key, callback) {
+        let bodyfetch = {
+            "key": key
+        }
+        if (db) {
+            fetch(db + "/del", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                if (json) {
+                    if (json["status"] === false) callback(false);
+                    if (json ["status"] === true) callback(json);
+                }
+            })
+        }
+    }
+}
