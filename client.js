@@ -12,8 +12,8 @@ module.exports = {
             }
             fetch(db + "/set", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) callback(false);
-                    if (json["status"] === true) callback(json);
+                    if (json["status"] === false) return callback(false);
+                    if (json["status"] === true) return callback(json);
                 }
             })
         }
@@ -26,8 +26,8 @@ module.exports = {
             }
             fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) callback(false);
-                    if (json["status"] === true) callback(true);
+                    if (json["status"] === false) return callback(false);
+                    if (json["status"] === true) return callback(true);
                 }
             })
         }
@@ -40,12 +40,12 @@ module.exports = {
             }
             fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) callback(false);
+                    if (json["status"] === false) return callback(false);
 
                     if (json["data"]) {
-                        callback(json["data"]);
+                        return callback(json["data"]);
                     } else {
-                        callback(undefined);
+                        return callback(undefined);
                     }
                 }
             })
@@ -59,8 +59,8 @@ module.exports = {
         if (db) {
             fetch(db + "/del", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) callback(false);
-                    if (json ["status"] === true) callback(json);
+                    if (json["status"] === false) return callback(false);
+                    if (json ["status"] === true) return callback(json);
                 }
             })
         }
