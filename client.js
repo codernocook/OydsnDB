@@ -1,10 +1,12 @@
-const db = "https://{your database website here}"
+const db = "the database address here or env key direct to the database address";
+const authkey = "the auth key like a password here!";
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 module.exports = {
     set(key, value, callback) {
         if (db) {
             let bodyfetch = {
+                "authorization": authkey,
                 "key": key,
                 "value": value
             }
@@ -19,7 +21,8 @@ module.exports = {
     has(key, callback) {
         if (db) {
             let bodyfetch = {
-                "key": key,
+                "authorization": authkey,
+                "key": key
             }
             fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
@@ -32,7 +35,8 @@ module.exports = {
     get(key, callback) {
         if (db) {
             let bodyfetch = {
-                "key": key,
+                "authorization": authkey,
+                "key": key
             }
             fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
@@ -49,6 +53,7 @@ module.exports = {
     },
     delete(key, callback) {
         let bodyfetch = {
+            "authorization": authkey,
             "key": key
         }
         if (db) {

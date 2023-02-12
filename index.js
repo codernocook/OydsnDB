@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 let db = require("./database.json");
+const authtoken = "the token here or env toke0n"
 
 let localdb = new Map(
     db.map(obj => {
@@ -22,7 +23,43 @@ if info is not vaild, it will return undefined
 
 app.use(express.json()); // this method allow you to post
 
-app.get("/get", (req, res) => {
+// Authentication
+app.use((req, res, next) => {
+    try {req} catch {
+        res.status(401).json({
+            status: false,
+            keyname: null,
+            data: null,
+            message: "authentication_failed",
+        })
+    }
+    if (req) {
+        if (req.body["authorization"]) {
+            if (req.body["authorization"] && req.body["authorization"] !== authtoken) {
+                res.status(401).json({
+                    status: false,
+                    keyname: null,
+                    data: null,
+                    message: "authentication_failed",
+                })
+                return;
+            }
+            if (req.body["authorization"] && req.body["authorization"] === authtoken) {
+                next();
+            }
+        } else {
+                res.status(401).json({
+                    status: false,
+                    keyname: null,
+                    data: null,
+                    message: "authentication_failed",
+                })
+                return;
+        }
+    }
+})
+
+app.post("/get", (req, res) => {
     try {
         // check if the db is exits
         const execpath = `./database.json`
@@ -42,7 +79,7 @@ app.get("/get", (req, res) => {
             status: false,
             keyname: null,
             data: null,
-            message: "failled",
+            message: "failed",
         })
     }
 })
@@ -61,7 +98,7 @@ app.post("/set", (req, res) => {
                 status: false,
                 keyname: null,
                 data: null,
-                message: "failled",
+                message: "failed",
             })
         }
 
@@ -85,7 +122,7 @@ app.post("/set", (req, res) => {
             status: false,
             keyname: null,
             data: null,
-            message: "failled",
+            message: "failed",
         })
     }
 })
@@ -103,7 +140,7 @@ app.delete("/del", (req, res) => {
                 status: false,
                 keyname: null,
                 data: null,
-                message: "failled",
+                message: "failed",
             })
         }
 
@@ -132,7 +169,7 @@ app.delete("/del", (req, res) => {
             status: false,
             keyname: null,
             data: null,
-            message: "failled",
+            message: "failed",
         })
     }
 })
@@ -150,7 +187,7 @@ app.post("/has", (req, res) => {
                 status: false,
                 keyname: null,
                 data: null,
-                message: "failled",
+                message: "failed",
             })
         }
 
@@ -172,7 +209,7 @@ app.post("/has", (req, res) => {
                 status: false,
                 keyname: null,
                 data: null,
-                message: "failled",
+                message: "failed",
             })
         }
     } catch {
@@ -180,7 +217,7 @@ app.post("/has", (req, res) => {
             status: false,
             keyname: null,
             data: null,
-            message: "failled",
+            message: "failed",
         })
     }
 })
