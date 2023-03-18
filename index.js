@@ -22,6 +22,15 @@ if info is not vaild, it will return undefined
 */
 
 app.use(express.json()); // this method allow you to post
+// Error handler
+process.on('uncaughtException', function(err) {
+    res.status(401).json({
+        status: false,
+        keyname: null,
+        data: null,
+        message: "authentication_failed",
+    })
+})
 
 // Authentication
 app.use((req, res, next) => {
