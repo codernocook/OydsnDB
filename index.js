@@ -1,7 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 let db = require("./database.json");
-const authtoken = "the token here or env toke0n"
+const authtoken = "the token here or env token"
 
 let localdb = new Map(
     db.map(obj => {
@@ -15,21 +15,25 @@ app.listen(3000, () => console.log("InjectDB is RUNNING!"))
 
 /* feature
 - get/{info}
-- save{info: can be array}
+- save {info: can be array}
 - delete: {info}
+- clear: remove everything it have in the database
 
 if info is not vaild, it will return undefined
 */
 
 app.use(express.json()); // this method allow you to post
+
 // Error handler
 process.on('uncaughtException', function(err) {
-    res.status(401).json({
-        status: false,
-        keyname: null,
-        data: null,
-        message: "authentication_failed",
-    })
+    try {
+        res.status(401).json({
+            status: false,
+            keyname: null,
+            data: null,
+            message: "authentication_failed",
+        })
+    } catch {};
 })
 
 // Authentication
@@ -221,6 +225,31 @@ app.post("/has", (req, res) => {
                 message: "failed",
             })
         }
+    } catch {
+        res.json({
+            status: false,
+            keyname: null,
+            data: null,
+            message: "failed",
+        })
+    }
+})
+
+app.post("/clear", (req, res) => {
+    try {
+        // check if the db is exits
+        const execpath = `./database.json`
+        let decodeinfo = db;
+
+        localdb.clear(); // clear everything have in it local database
+        fs.writeFileSync("./database.json", "[]"); // clear the stored json database
+
+        res.json({
+            status: true,
+            keyname: [],
+            data: [],
+            message: "sucessfully",
+        })
     } catch {
         res.json({
             status: false,

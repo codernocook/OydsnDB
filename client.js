@@ -1,9 +1,10 @@
-const db = "the database address here or env key direct to the database address";
-const authkey = "the auth key like a password here!";
+// const db = "the database address here or env key direct to the database address";
+// const authkey = "the auth key like a password here!";
+
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-module.exports = {
-    set(key, value, callback) {
+module.exports = function(db, authkey) {
+    function set(key, value, callback) {
         try {
             if (db) {
                 let bodyfetch = {
@@ -21,8 +22,8 @@ module.exports = {
         } catch {
             return callback(false);
         }
-    },
-    has(key, callback) {
+    };
+    function has(key, callback) {
         try {
             if (db) {
                 let bodyfetch = {
@@ -39,8 +40,8 @@ module.exports = {
         } catch {
             return callback(false);
         }
-    },
-    get(key, callback) {
+    };
+    function get(key, callback) {
         try {
             if (db) {
                 let bodyfetch = {
@@ -62,8 +63,8 @@ module.exports = {
         } catch {
             return callback(undefined);
         }
-    },
-    delete(key, callback) {
+    };
+    function del(key, callback) {
         try {
             let bodyfetch = {
                 "authorization": authkey,
@@ -80,5 +81,23 @@ module.exports = {
         } catch {
             return callback(false);
         }
-    }
+    };
+    function clear(key, callback) {
+        try {
+            let bodyfetch = {
+                "authorization": authkey,
+                "key": key
+            }
+            if (db) {
+                fetch(db + "/clear", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                    if (json) {
+                        if (json["status"] === false) return callback(false);
+                        if (json ["status"] === true) return callback(json);
+                    }
+                })
+            }
+        } catch {
+            return callback(false);
+        }
+    };
 }
