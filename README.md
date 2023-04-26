@@ -1,2 +1,2 @@
 # InjectDB
- A simple expressjs database
+ A simple expressjs database.
