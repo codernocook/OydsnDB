@@ -1,7 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 let db = require("./database.json");
-const authtoken = "the token here or env token"
+const authtoken = process.env["authToken"]
 
 let localdb = new Map(
     db.map(obj => {
