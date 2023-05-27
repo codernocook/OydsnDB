@@ -25,25 +25,25 @@ if info is not vaild, it will return undefined
 app.use(express.json()); // this method allow you to post
 
 // Error handler
-process.on('uncaughtException', function(err) {
-    try {
-        res.status(401).json({
-            status: false,
-            keyname: null,
-            data: null,
-            message: "authentication_failed",
-        })
-    } catch {};
-})
+process.on('uncaughtException', function() {})
 
 // Authentication
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
     try {req} catch {
         res.status(401).json({
             status: false,
             keyname: null,
             data: null,
             message: "authentication_failed",
+        })
+    }
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        console.error(err);
+        return res.status(401).json({
+            status: false,
+            keyname: null,
+            data: null,
+            message: "bad_format",
         })
     }
     if (req) {
