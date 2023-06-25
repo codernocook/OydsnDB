@@ -11,39 +11,52 @@ let localdb = new Map(
 
 const app = express();
 
-app.listen(3000, () => console.log("InjectDB is RUNNING!"))
+// Starting Server
+const before_runTime = Date.now();
+app.listen(3000, () => console.log(`[expressDB]: success, took ${Date.now() - before_runTime}ms!`));
+app.use(express.json());
 
-/* feature
-- get/{info}
-- save {info: can be array}
-- delete: {info}
-- clear: remove everything it have in the database
+/* 
+    === Feature ===
+    - [POST]    /get     {key: the name of saved infomation, authorization: the password to database}.
+    - [POST]    /has     {key: the name of saved infomation (check if the key is exist), authorization: the password to database}.
+    - [POST]    /set     {key: the name you want to save in database, value: the data you want (just call the key and the /get will throw data), authorization: the password to database}.
+    - [DELETE]  /del  {key: the name of saved infomation to delete, authorization: the password to database}.
+    - [POST]    /clear   {authorization: the password to database}.
 
-if info is not vaild, it will return undefined
+    === Status Code ===
+    - [401]: "authentication_failed", meaning the password to access the database is missing or not vaild.
+    - [501]: "request_error", meaning the request sent to the server having error, like unfinish json can (crash the database: already have error handler, so you don't need to scare about that).
+    - [200]: "sucessfully", meaning the request is vaild. Now you will have access to the database
+
+    === Configuration ===
+    - The "authtoken" variable is the password access to database, you can set it as a env token to secure your token
+
+    If info is not vaild, it will return `undefined`.
 */
 
-app.use(express.json()); // this method allow you to post
 
 // Error handler
-process.on('uncaughtException', function() {})
+process.on('uncaughtException', function() { /*console.log("[expressDB]: error found!")*/ })
 
 // Authentication
-app.use((err, req, res, next) => {
-    try {req} catch {
-        res.status(401).json({
+app.use((req, res, next) => {
+    try {
+        const jsonTesting_handler = JSON.parse(req);
+    } catch {
+        res.status(500).json({
             status: false,
             keyname: null,
             data: null,
-            message: "authentication_failed",
+            message: "request_error",
         })
     }
-    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-        console.error(err);
-        return res.status(401).json({
+    try {req} catch {
+        res.status(500).json({
             status: false,
             keyname: null,
             data: null,
-            message: "bad_format",
+            message: "request_error",
         })
     }
     if (req) {
@@ -70,6 +83,13 @@ app.use((err, req, res, next) => {
                 return;
         }
     }
+}).catch(() => {
+    res.status(500).json({
+        status: false,
+        keyname: null,
+        data: null,
+        message: "request_error",
+    })
 })
 
 app.post("/get", (req, res) => {
