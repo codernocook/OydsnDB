@@ -83,13 +83,6 @@ app.use((req, res, next) => {
                 return;
         }
     }
-}).catch(() => {
-    res.status(500).json({
-        status: false,
-        keyname: null,
-        data: null,
-        message: "request_error",
-    })
 })
 
 app.post("/get", (req, res) => {
