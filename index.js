@@ -1,7 +1,10 @@
+// The password
+const authToken = "the token here or env token"
+
+// Database Variable
 const express = require("express");
 const fs = require("fs");
 let db = require("./database.json");
-const authtoken = "the token here or env token"
 
 let localdb = new Map(
     db.map(obj => {
@@ -26,11 +29,11 @@ app.use(express.json());
 
     === Status Code ===
     - [401]: "authentication_failed", meaning the password to access the database is missing or not vaild.
-    - [501]: "request_error", meaning the request sent to the server having error, like unfinish json can (crash the database: already have error handler, so you don't need to scare about that).
+    - [400]: "request_error", meaning the request sent to the server having error, like bad json format
     - [200]: "sucessfully", meaning the request is vaild. Now you will have access to the database
 
     === Configuration ===
-    - The "authtoken" variable is the password access to database, you can set it as a env token to secure your token
+    - The "authToken" variable is the password access to database, you can set it as a env token to secure your token
 
     If info is not vaild, it will return `undefined`.
 */
@@ -39,48 +42,49 @@ app.use(express.json());
 // Error handler
 process.on('uncaughtException', function() { /*console.log("[expressDB]: error found!")*/ })
 
+// Bad json format
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        return res.status(400).json({
+            status: false,
+            keyname: null,
+            data: null,
+            message: "request_error",
+        })
+    }
+})
+
 // Authentication
 app.use((req, res, next) => {
-    try {
-        const jsonTesting_handler = JSON.parse(req);
-    } catch {
-        res.status(500).json({
+    if (req instanceof SyntaxError && req.status === 400 && 'body' in req) {
+        return res.status(400).json({
             status: false,
             keyname: null,
             data: null,
             message: "request_error",
         })
     }
-    try {req} catch {
-        res.status(500).json({
-            status: false,
-            keyname: null,
-            data: null,
-            message: "request_error",
-        })
-    }
-    if (req) {
-        if (req.body["authorization"]) {
-            if (req.body["authorization"] && req.body["authorization"] !== authtoken) {
-                res.status(401).json({
+    
+    if (req && req["body"]) {
+        if (req["body"]["authorization"]) {
+            if (req.body["authorization"] !== authToken) {
+                return res.status(401).json({
                     status: false,
                     keyname: null,
                     data: null,
                     message: "authentication_failed",
-                })
-                return;
+                });
             }
-            if (req.body["authorization"] && req.body["authorization"] === authtoken) {
+            if (req.body["authorization"] === authToken) {
                 next();
             }
         } else {
-                res.status(401).json({
-                    status: false,
-                    keyname: null,
-                    data: null,
-                    message: "authentication_failed",
-                })
-                return;
+            return res.status(401).json({
+                status: false,
+                keyname: null,
+                data: null,
+                message: "authentication_failed",
+            });
         }
     }
 })
