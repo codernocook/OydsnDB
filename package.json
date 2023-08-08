@@ -1,5 +1,11 @@
 {
+  "name": "nodejs_database",
+  "author": {
+    "name": "codernocook",
+    "url": "https://codernocook.github.io"
+  },
   "dependencies": {
+    "crypto-js": "^4.1.1",
     "express": "^4.18.2",
     "helmet": "^7.0.0"
   },
