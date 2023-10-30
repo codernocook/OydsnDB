@@ -65,7 +65,7 @@ module.exports = function(db, authkey) {
                 return callback(undefined);
             }
         },
-        getAll(key, callback) {
+        getAll(callback) {
             let bodyfetch = {
                 "authorization": authkey,
                 "key": key
