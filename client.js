@@ -65,6 +65,23 @@ module.exports = function(db, authkey) {
                 return callback(undefined);
             }
         },
+        getAll(key, callback) {
+            let bodyfetch = {
+                "authorization": authkey,
+                "key": key
+            }
+            fetch(db + "/get", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                if (json) {
+                    if (json["status"] === false) return callback(false);
+
+                    if (json["data"]) {
+                        return callback(json["data"]);
+                    } else {
+                        return callback(undefined);
+                    }
+                }
+            })
+        },
         del(key, callback) {
             try {
                 let bodyfetch = {
