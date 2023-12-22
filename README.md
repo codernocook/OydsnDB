@@ -22,21 +22,28 @@ const database = require("./client.js")(authToken, accessToken); // You can chan
 ```
 
 Functions:
-.set(key : the name what you want to save to database, value : the value save with the key, callback: function; "function(data) => {}") <= Set data to database.\
-.has(key : the name what you want to check in the database, function(data : boolean) => {}", the data is boolean: true/false) <= Check if data exist in database.\
-.get(key : the name what you want get in database, callback: function; "function(data) => {}") <= Get data with the key. The data will return `undefined` if the data not exist.\
-.getAll(callback: function; "function(data) => {}") <= Get all data include key and value.\
-.del(key : the name what you want to remove the value and key in database, callback: function; "function(data) => {}") <= Delete a key (include value).\
-.clear(callback: function; "function(data) => {}") <= this action is harmful to database, It will delete all data.\
+```js
+.set("key : the name what you want to save to database", value : "the value save with the key", callback: function; "function(data) => {}") // <= Set data to database.
 
-Example (with explanations)
+.has("key : the name what you want to check in the database", callback: function(data : boolean) => {}, "the data is boolean: true/false") // <= Check if data exist in database.
+
+.get("key : the name what you want get in database", callback: function; "function(data) => {}") // <= Get data with the key. The data will return `undefined` if the data not exist.
+
+.getAll(callback: function; "function(data) => {}") // <= Get all data include key and value.
+
+.del("key : the name what you want to remove the value and key in database", callback: function; "function(data) => {}") // <= Delete a key (include value).
+
+.clear(callback: function; "function(data) => {}") // <= this action is harmful to database, It will delete all data.
+```
+
+Example (with explanations):
 ```js
 const database = require("./client.js")(https://authToken, accessToken); // You can change the name like how you name it.
 
-const user = "User0"
+const user = "User0";
 const data = {
  "job": "Manager",
- "pet": "no pet"
+ "pet": "no pet",
  "age": 1000
 }
 
@@ -46,7 +53,7 @@ database.get(user, (data) => {
  /* Output
  {
   "job": "Manager",
-  "pet": "no pet"
+  "pet": "no pet",
   "age": 1000
  }
  */
