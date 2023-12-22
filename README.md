@@ -54,7 +54,7 @@ database.get(user, (data) => {
 ```
 
 # Note
-I might not continue to update this project anymore. :(\
+I might not continue to update this project anymore. :(
 
 Check out my page: https://codernocook.github.io/
 
