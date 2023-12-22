@@ -15,13 +15,13 @@ module.exports = function(db, authkey) {
                     }
                     fetch(db + "/set", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                         if (json) {
-                            if (json["status"] === false) return callback(false);
-                            if (json["status"] === true) return callback(json);
+                            if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
+                            if (json["status"] === true) if (callback !== undefined && callback !== null) return callback(json);
                         }
                     })
                 }
             } catch {
-                return callback(false);
+                if (callback !== undefined && callback !== null) return callback(false);
             }
         },
         has(key, callback) {
@@ -33,13 +33,13 @@ module.exports = function(db, authkey) {
                     }
                     fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                         if (json) {
-                            if (json["status"] === false) return callback(false);
-                            if (json["status"] === true) return callback(true);
+                            if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
+                            if (json["status"] === true) if (callback !== undefined && callback !== null) return callback(true);
                         }
                     })
                 }
             } catch {
-                return callback(false);
+                if (callback !== undefined && callback !== null) return callback(false);
             }
         },
         get(key, callback) {
@@ -51,18 +51,18 @@ module.exports = function(db, authkey) {
                     }
                     fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                         if (json) {
-                            if (json["status"] === false) return callback(false);
+                            if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
         
                             if (json["data"]) {
-                                return callback(json["data"]);
+                                if (callback !== undefined && callback !== null) return callback(json["data"]);
                             } else {
-                                return callback(undefined);
+                                if (callback !== undefined && callback !== null) return callback(undefined);
                             }
                         }
                     })
                 }
             } catch {
-                return callback(undefined);
+                if (callback !== undefined && callback !== null) return callback(undefined);
             }
         },
         getAll(callback) {
@@ -72,12 +72,12 @@ module.exports = function(db, authkey) {
             }
             fetch(db + "/get", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) return callback(false);
+                    if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
 
                     if (json["data"]) {
-                        return callback(json["data"]);
+                        if (callback !== undefined && callback !== null) return callback(json["data"]);
                     } else {
-                        return callback(undefined);
+                        if (callback !== undefined && callback !== null) return callback(undefined);
                     }
                 }
             })
@@ -91,13 +91,13 @@ module.exports = function(db, authkey) {
                 if (db) {
                     fetch(db + "/del", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                         if (json) {
-                            if (json["status"] === false) return callback(false);
-                            if (json ["status"] === true) return callback(json);
+                            if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
+                            if (json ["status"] === true) if (callback !== undefined && callback !== null) return callback(json);
                         }
                     })
                 }
             } catch {
-                return callback(false);
+                if (callback !== undefined && callback !== null) return callback(false);
             }
         },
         clear(key, callback) {
@@ -109,13 +109,13 @@ module.exports = function(db, authkey) {
                 if (db) {
                     fetch(db + "/clear", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                         if (json) {
-                            if (json["status"] === false) return callback(false);
-                            if (json ["status"] === true) return callback(json);
+                            if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
+                            if (json ["status"] === true) if (callback !== undefined && callback !== null) return callback(json);
                         }
                     })
                 }
             } catch {
-                return callback(false);
+                if (callback !== undefined && callback !== null) return callback(false);
             }
         }
     }
