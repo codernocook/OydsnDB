@@ -1,20 +1,12 @@
 # OydsnDB
  A simple expressjs database.
 
-`client.js` is for the client that can connect to the database.\
-`clientOriginal.js` is for the original code, not minimized.\
-`index.js` the database server.\
-`minimized.js` is for hosting database, it's minimized.
+`oydsndb_client.js` is for the client that can connect to the database.\
+`oydsndb_clientOriginal.js` is for the original code, not minimized.\
 
-# Settings
-Add a `.env` file, or use some hosting services, and add environment variable named:\
-"authToken" for access token to the database, the **password** to login.\
-"accessJSON" is the password encrypt the json, make sure to make it different so no one can decrypt it. **Remember to make it different from authToken, Just generate it randomly**.
-
-- Use `minimized.js` to host, and add these enviroment variables.
-
-# What's client.js
-`client.js` use to connect to database server.
+# What's oydsndb_client.js
+`oydsndb_client.js` use to connect to database server.
+`oydsndb_clientOriginal` is the original version without minimized.
 
 You can import it by:
 ```js
@@ -63,25 +55,6 @@ database.get(user, (data_from_database) => {
     */
 })
 ```
-
-# Server Return
-Server will only response with code: 200, 400, 401\n
-
-Server's Response (JSON):
-```json
-{
-    status: false,          <= Status, success is true, and failure is false
-    keyname: null,          <= keyname only for /set, /has, /delete, /clear
-    data: null,             <= Data return from server from request like /get, /has, ... It also from the list "keyname" too
-    message: "...",         <= Success, and error code
-}
-```
-
-All messages:
-- request_error: Meaning your JSON format is not correct.
-- authentication_failed: The password access to database is incorrect, not valid. Normal the status code response back with `401`.
-- sucessfully: The request that you sent is success, no error.
-- failed: It might be server's issue.
 
 # Note
 I might not continue to update this project anymore. :(
