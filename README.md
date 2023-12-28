@@ -1,4 +1,4 @@
-# PangeaDB
+# OydsnDB
  A simple expressjs database.
 
 `client.js` is for the client that can connect to the database.\
@@ -8,8 +8,8 @@
 
 # Settings
 Add a `.env` file, or use some hosting services, and add environment variable named:\
-"authToken" for access token to the database.\
-"accessJSON" is the password encrypt the json, make sure to make it different so no one can decrypt it.
+"authToken" for access token to the database, the **password** to login.\
+"accessJSON" is the password encrypt the json, make sure to make it different so no one can decrypt it. **Remember to make it different from authToken, Just generate it randomly**.
 
 - Use `minimized.js` to host, and add these enviroment variables.
 
@@ -23,17 +23,21 @@ const database = require("./client.js")(authToken, accessToken); // You can chan
 
 Functions:
 ```js
-.set("key : the name what you want to save to database", value : "the value save with the key", callback: function; "function(data) => {}") // <= Set data to database.
+/* Explains
+key : the name what you want to save to databas
+*/
 
-.has("key : the name what you want to check in the database", callback: function(data : boolean) => {}, "the data is boolean: true/false") // <= Check if data exist in database.
+.set(key, value, callback: function; "function(data) => {}") // <= Set data to database.
 
-.get("key : the name what you want get in database", callback: function; "function(data) => {}") // <= Get data with the key. The data will return `undefined` if the data not exist.
+.has(key, callback: (data : boolean) => {}) // <= Check if data exist in database.
 
-.getAll(callback: function; "function(data) => {}") // <= Get all data include key and value.
+.get(key, callback: (data) => {}) // <= Get data with the key. The data will return `undefined` if the data not exist.
 
-.del("key : the name what you want to remove the value and key in database", callback: function; "function(data) => {}") // <= Delete a key (include value).
+.getAll(callback: (data) => {}) // <= Get all data include key and value.
 
-.clear(callback: function; "function(data) => {}") // <= this action is harmful to database, It will delete all data.
+.delete("key : the name what you want to remove the value and key in database", callback: function; "function(data) => {}") // <= Delete a key (include value).
+
+.clear(callback: (data) => {}, { "force": true }) // <= this action is harmful to database, It will delete all data. The "force" inside object is make sure that you not delete it by mistake.
 ```
 
 Example (with explanations):
@@ -48,20 +52,40 @@ const data = {
 }
 
 database.set(user, data, () => {}); // Set data to database
-database.get(user, (data) => {
- console.log(data)
- /* Output
- {
-  "job": "Manager",
-  "pet": "no pet",
-  "age": 1000
- }
- */
+database.get(user, (data_from_database) => {
+    console.log(data_from_database)
+    /* Output
+    {
+    "job": "Manager",
+    "pet": "no pet",
+    "age": 1000
+    }
+    */
 })
 ```
 
+# Server Return
+Server will only response with code: 200, 400, 401\n
+
+Server's Response (JSON):
+```json
+{
+    status: false,          <= Status, success is true, and failure is false
+    keyname: null,          <= keyname only for /set, /has, /delete, /clear
+    data: null,             <= Data return from server from request like /get, /has, ... It also from the list "keyname" too
+    message: "...",         <= Success, and error code
+}
+```
+
+All messages:
+- request_error: Meaning your JSON format is not correct.
+- authentication_failed: The password access to database is incorrect, not valid. Normal the status code response back with `401`.
+- sucessfully: The request that you sent is success, no error.
+- failed: It might be server's issue.
+
 # Note
 I might not continue to update this project anymore. :(
+But It's still work so don't worry, I only update when the project have issue.
 
 Check out my page: https://codernocook.github.io/
 
