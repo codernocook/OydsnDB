@@ -57,7 +57,7 @@ module.exports = function(db, authkey) {
                             if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
                             if (json["status"] === true) if (callback !== undefined && callback !== null) return callback(json);
                         } else if (isJSON(json_str) === false) {
-                            if (callback !== undefined && callback !== null) return callback({ "success": false, "code": "cannot_connect_database" });
+                            if (callback !== undefined && callback !== null) return callback(undefined);
                         }
                     })
                 }
@@ -79,7 +79,7 @@ module.exports = function(db, authkey) {
                             if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
                             if (json["status"] === true) if (callback !== undefined && callback !== null) return callback(true);
                         } else if (isJSON(json_str) === false) {
-                            if (callback !== undefined && callback !== null) return callback({ "success": false, "code": "cannot_connect_database" });
+                            if (callback !== undefined && callback !== null) return callback(undefined);
                         }
                     })
                 }
@@ -98,14 +98,14 @@ module.exports = function(db, authkey) {
                         if (isJSON(json_str) === true) {
                             let json = JSON.parse(json_str);
 
-                            if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
+                            if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(null);
                             if (json["data"]) {
                                 if (callback !== undefined && callback !== null) return callback(json["data"]);
                             } else {
-                                if (callback !== undefined && callback !== null) return callback(undefined);
+                                if (callback !== undefined && callback !== null) return callback(null);
                             }
                         } else if (isJSON(json_str) === false) {
-                            if (callback !== undefined && callback !== null) return callback({ "success": false, "code": "cannot_connect_database" });
+                            if (callback !== undefined && callback !== null) return callback(undefined);
                         }
                     })
                 }
@@ -122,11 +122,11 @@ module.exports = function(db, authkey) {
                 if (isJSON(json_str) === true) {
                     let json = JSON.parse(json_str);
                     
-                    if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
+                    if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(null);
                     if (json["data"]) {
                         if (callback !== undefined && callback !== null) return callback(json["data"]);
                     } else {
-                        if (callback !== undefined && callback !== null) return callback(undefined);
+                        if (callback !== undefined && callback !== null) return callback(null);
                     }
                 } else if (isJSON(json_str) === false) {
                     if (callback !== undefined && callback !== null) return callback(undefined);
@@ -147,7 +147,7 @@ module.exports = function(db, authkey) {
                             if (json["status"] === false) if (callback !== undefined && callback !== null) return callback(false);
                             if (json ["status"] === true) if (callback !== undefined && callback !== null) return callback(json);
                         } else if (isJSON(json_str) === false) {
-                            if (callback !== undefined && callback !== null) return callback({ "success": false, "code": "cannot_connect_database" });
+                            if (callback !== undefined && callback !== null) return callback(undefined);
                         }
                     })
                 }

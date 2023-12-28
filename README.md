@@ -1,16 +1,13 @@
 # OydsnDB
  A simple expressjs database.
 
-`oydsndb_client.js`: This file is for the client that can connect to the database.\
-`oydsndb_clientOriginal.js`: This file contains the original code, not minimized.
-
-# What's oydsndb_client.js
+# What's oydsndb_client.js and oydsndb_clientOriginal.js?
 `oydsndb_client.js` is used to connect to the database server. 
-`oydsndb_clientOriginal` is the original version without being minimized.
+`oydsndb_clientOriginal.js` is the original version without being minimized.
 
 You can import it by:
 ```js
-const database = require("./client.js")(authToken, accessToken); // You can change the name as you like.
+const database = require("./oydsndb_client.js")(authToken, accessToken); // You can change the name as you like.
 ```
 
 Functions:
@@ -18,8 +15,9 @@ Functions:
 /* Explains
 key: The name you choose to save data in the database.
 value: The actual data you want to store in the database. You can later retrieve this data by using .get and specifying the key.
-callback: It can include a boolean (true/false) indicating success, data in JSON format, or undefined (no data found),
-If your callback returns: {"success": "false", "code": "cannot_connect_database"}, it means that your database URL is not valid or cannot be connected.
+callback: It can include a boolean (true/false) indicating success, data in JSON format, or null (no data found),
+If your callback returns: undefined, it means that your database URL is not valid or cannot be connected.
+If your callback returns: false, it also means that the request something is not success (failure request), only these function: .set(), .delete(), .clear()
 */
 
 .set(key, value, callback: function; "function(data) => {}") // <= Set data to the database.
@@ -37,7 +35,7 @@ If your callback returns: {"success": "false", "code": "cannot_connect_database"
 
 Example (with explanations):
 ```js
-const database = require("./client.js")(https://authToken, accessToken); // You can change the name like how you name it.
+const database = require("./oydsndb_client.js")(https://authToken, accessToken); // You can change the name like how you name it.
 
 const user = "User0";
 const data = {
