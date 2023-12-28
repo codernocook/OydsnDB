@@ -1,66 +1,31 @@
 # OydsnDB
- A simple expressjs database.
+A simple Express.js database.
 
-`oydsndb_client.js` is for the client that can connect to the database.\
-`oydsndb_clientOriginal.js` is for the original code, not minimized.\
+`oydsndb_client.js` is the client that can connect to the database.\
+`oydsndb_clientOriginal.js` is the original code, not minimized.\
+`index.js` is the database server.\
+`indexOriginal.js` is for hosting the database; it's not minimized.
 
-# What's oydsndb_client.js
-`oydsndb_client.js` use to connect to database server.
-`oydsndb_clientOriginal` is the original version without minimized.
+# Settings
+Add a `.env` file, or use some hosting services, and add an environment variable named:\
+"authToken" for the access token to the database, the **password** to log in.\
+"accessJSON" is the password to encrypt the JSON. Make sure to make it different so no one can decrypt it. **Remember to make it different from authToken; just generate it randomly**.
 
-You can import it by:
-```js
-const database = require("./client.js")(authToken, accessToken); // You can change the name like how you name it.
-```
+- Use `index.js` to host and add these environment variables.
 
-Functions:
-```js
-/* Explains
-key : the name what you want to save to databas
-*/
+# What are the "client" and "server" branches?
+- Check the "client" branch and download the file "oydsndb_client.js" to use in your project.
+- Check the "server" branch and download all the files in that directory to host the server.
 
-.set(key, value, callback: function; "function(data) => {}") // <= Set data to database.
-
-.has(key, callback: (data : boolean) => {}) // <= Check if data exist in database.
-
-.get(key, callback: (data) => {}) // <= Get data with the key. The data will return `undefined` if the data not exist.
-
-.getAll(callback: (data) => {}) // <= Get all data include key and value.
-
-.delete("key : the name what you want to remove the value and key in database", callback: function; "function(data) => {}") // <= Delete a key (include value).
-
-.clear(callback: (data) => {}, { "force": true }) // <= this action is harmful to database, It will delete all data. The "force" inside object is make sure that you not delete it by mistake.
-```
-
-Example (with explanations):
-```js
-const database = require("./client.js")(https://authToken, accessToken); // You can change the name like how you name it.
-
-const user = "User0";
-const data = {
- "job": "Manager",
- "pet": "no pet",
- "age": 1000
-}
-
-database.set(user, data, () => {}); // Set data to database
-database.get(user, (data_from_database) => {
-    console.log(data_from_database)
-    /* Output
-    {
-    "job": "Manager",
-    "pet": "no pet",
-    "age": 1000
-    }
-    */
-})
-```
+Make sure the database server is on a different server, not in the same hosting node or project.\
+Your "oydsndb_client.js" is used to connect to the database and fetch data.\
+All explanations are inside these branches; you can check them out.
 
 # Note
 I might not continue to update this project anymore. :(
-But It's still work so don't worry, I only update when the project have issue.
+But it still works, so don't worry; I only update when the project has an issue.
 
 Check out my page: https://codernocook.github.io/
 
 You can replace this database with a better one.\
-I made this database because I want to have a better storage and make self-hosting easier.
+I made this database because I wanted to have better storage and make self-hosting easier.
