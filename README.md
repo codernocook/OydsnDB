@@ -17,7 +17,9 @@ key: The name you choose to save data in the database.
 value: The actual data you want to store in the database. You can later retrieve this data by using .get and specifying the key.
 callback: It can include a boolean (true/false) indicating success, data in JSON format, or null (no data found),
 If your callback returns: undefined, it means that your database URL is not valid or cannot be connected.
-If your callback returns: false, it also means that the request something is not success (failure request), only these function: .set(), .delete(), .clear()
+If your callback returns: false, it also means that the request something is not success (failure request), only these function: .set(), .delete(), .clear(),
+The value false is the error from server, undefined is from client
+To check the failure, check both false and undefined (false && undefined)
 */
 
 .set(key, value, callback: function; "function(data) => {}") // <= Set data to the database.

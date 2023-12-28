@@ -62,7 +62,7 @@ module.exports = function(db, authkey) {
                     })
                 }
             } catch {
-                if (callback !== undefined && callback !== null) return callback(false);
+                if (callback !== undefined && callback !== null) return callback(undefined);
             }
         },
         has(key, callback) {
@@ -84,7 +84,7 @@ module.exports = function(db, authkey) {
                     })
                 }
             } catch {
-                if (callback !== undefined && callback !== null) return callback(false);
+                if (callback !== undefined && callback !== null) return callback(undefined);
             }
         },
         get(key, callback) {
@@ -140,7 +140,7 @@ module.exports = function(db, authkey) {
                     "key": key
                 }
                 if (db) {
-                    fetch(db + "/del", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then((res) => res.text()).then((json_str) => {
+                    fetch(db + "/delete", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then((res) => res.text()).then((json_str) => {
                         if (isJSON(json_str) === true) {
                             let json = JSON.parse(json_str);
 
@@ -152,7 +152,7 @@ module.exports = function(db, authkey) {
                     })
                 }
             } catch {
-                if (callback !== undefined && callback !== null) return callback(false);
+                if (callback !== undefined && callback !== null) return callback(undefined);
             }
         },
         clear(key, callback, signature) {
@@ -175,7 +175,7 @@ module.exports = function(db, authkey) {
                         })
                     }
                 } catch {
-                    if (callback !== undefined && callback !== null) return callback(false);
+                    if (callback !== undefined && callback !== null) return callback(undefined);
                 }
             }
         }
