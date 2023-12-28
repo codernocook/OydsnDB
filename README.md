@@ -1,20 +1,12 @@
-# PangeaDB
+# OydsnDB
  A simple expressjs database.
 
-`client.js` is for the client that can connect to the database.\
-`clientOriginal.js` is for the original code, not minimized.\
-`index.js` the database server.\
-`minimized.js` is for hosting database, it's minimized.
+`oydsndb_client.js` is for the client that can connect to the database.\
+`oydsndb_clientOriginal.js` is for the original code, not minimized.\
 
-# Settings
-Add a `.env` file, or use some hosting services, and add environment variable named:\
-"authToken" for access token to the database.\
-"accessJSON" is the password encrypt the json, make sure to make it different so no one can decrypt it.
-
-- Use `minimized.js` to host, and add these enviroment variables.
-
-# What's client.js
-`client.js` use to connect to database server.
+# What's oydsndb_client.js
+`oydsndb_client.js` use to connect to database server.
+`oydsndb_clientOriginal` is the original version without minimized.
 
 You can import it by:
 ```js
@@ -23,17 +15,21 @@ const database = require("./client.js")(authToken, accessToken); // You can chan
 
 Functions:
 ```js
-.set("key : the name what you want to save to database", value : "the value save with the key", callback: function; "function(data) => {}") // <= Set data to database.
+/* Explains
+key : the name what you want to save to databas
+*/
 
-.has("key : the name what you want to check in the database", callback: function(data : boolean) => {}, "the data is boolean: true/false") // <= Check if data exist in database.
+.set(key, value, callback: function; "function(data) => {}") // <= Set data to database.
 
-.get("key : the name what you want get in database", callback: function; "function(data) => {}") // <= Get data with the key. The data will return `undefined` if the data not exist.
+.has(key, callback: (data : boolean) => {}) // <= Check if data exist in database.
 
-.getAll(callback: function; "function(data) => {}") // <= Get all data include key and value.
+.get(key, callback: (data) => {}) // <= Get data with the key. The data will return `undefined` if the data not exist.
 
-.del("key : the name what you want to remove the value and key in database", callback: function; "function(data) => {}") // <= Delete a key (include value).
+.getAll(callback: (data) => {}) // <= Get all data include key and value.
 
-.clear(callback: function; "function(data) => {}") // <= this action is harmful to database, It will delete all data.
+.delete("key : the name what you want to remove the value and key in database", callback: function; "function(data) => {}") // <= Delete a key (include value).
+
+.clear(callback: (data) => {}, { "force": true }) // <= this action is harmful to database, It will delete all data. The "force" inside object is make sure that you not delete it by mistake.
 ```
 
 Example (with explanations):
@@ -48,20 +44,21 @@ const data = {
 }
 
 database.set(user, data, () => {}); // Set data to database
-database.get(user, (data) => {
- console.log(data)
- /* Output
- {
-  "job": "Manager",
-  "pet": "no pet",
-  "age": 1000
- }
- */
+database.get(user, (data_from_database) => {
+    console.log(data_from_database)
+    /* Output
+    {
+    "job": "Manager",
+    "pet": "no pet",
+    "age": 1000
+    }
+    */
 })
 ```
 
 # Note
 I might not continue to update this project anymore. :(
+But It's still work so don't worry, I only update when the project have issue.
 
 Check out my page: https://codernocook.github.io/
 
