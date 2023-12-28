@@ -1,35 +1,38 @@
 # OydsnDB
  A simple expressjs database.
 
-`oydsndb_client.js` is for the client that can connect to the database.\
-`oydsndb_clientOriginal.js` is for the original code, not minimized.\
+`oydsndb_client.js`: This file is for the client that can connect to the database.\
+`oydsndb_clientOriginal.js`: This file contains the original code, not minimized.
 
 # What's oydsndb_client.js
-`oydsndb_client.js` use to connect to database server.
-`oydsndb_clientOriginal` is the original version without minimized.
+`oydsndb_client.js` is used to connect to the database server. 
+`oydsndb_clientOriginal` is the original version without being minimized.
 
 You can import it by:
 ```js
-const database = require("./client.js")(authToken, accessToken); // You can change the name like how you name it.
+const database = require("./client.js")(authToken, accessToken); // You can change the name as you like.
 ```
 
 Functions:
 ```js
 /* Explains
-key : the name what you want to save to databas
+key: The name you choose to save data in the database.
+value: The actual data you want to store in the database. You can later retrieve this data by using .get and specifying the key.
+callback: It can include a boolean (true/false) indicating success, data in JSON format, or undefined (no data found),
+If your callback returns: {"success": "false", "code": "cannot_connect_database"}, it means that your database URL is not valid or cannot be connected.
 */
 
-.set(key, value, callback: function; "function(data) => {}") // <= Set data to database.
+.set(key, value, callback: function; "function(data) => {}") // <= Set data to the database.
 
-.has(key, callback: (data : boolean) => {}) // <= Check if data exist in database.
+.has(key, callback: (data: boolean) => {}) // <= Check if data exists in the database.
 
-.get(key, callback: (data) => {}) // <= Get data with the key. The data will return `undefined` if the data not exist.
+.get(key, callback: (data) => {}) // <= Get data with the key. The data will return `undefined` if the data does not exist.
 
-.getAll(callback: (data) => {}) // <= Get all data include key and value.
+.getAll(callback: (data) => {}) // <= Get all data, including key and value.
 
-.delete("key : the name what you want to remove the value and key in database", callback: function; "function(data) => {}") // <= Delete a key (include value).
+.delete(key, callback: function; "function(data) => {}") // <= Delete a key (including value).
 
-.clear(callback: (data) => {}, { "force": true }) // <= this action is harmful to database, It will delete all data. The "force" inside object is make sure that you not delete it by mistake.
+.clear(callback: (data) => {}, { "force": true }) // <= This action is harmful to the database. It will delete all data. The "force" inside the object ensures that you do not delete it by mistake.
 ```
 
 Example (with explanations):
