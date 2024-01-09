@@ -23,11 +23,13 @@
 */
 
 // Fetch api from nodejs started from 
-if (process.versions.node.split('.').map(Number) && process.versions.node.split('.').map(Number)[0] && process.versions.node.split('.').map(Number)[1]) {
-    const nodejs_version = process.versions.node.split('.').map(Number);
-
-    if (nodejs_version[0] < 18 || nodejs_version[1] < 19) fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-}
+try {
+    if (process.versions.node.split('.').map(Number) && process.versions.node.split('.').map(Number)[0] && process.versions.node.split('.').map(Number)[1]) {
+        const nodejs_version = process.versions.node.split('.').map(Number);
+    
+        if (nodejs_version[0] < 18 && nodejs_version[1] < 19) fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+    }
+} catch {};
 
 // isJson?
 const isJSON = (check_str) => {
@@ -115,8 +117,7 @@ module.exports = function(db, authkey) {
         },
         getAll(callback) {
             let bodyfetch = {
-                "authorization": authkey,
-                "key": key
+                "authorization": authkey
             }
             fetch(db + "/get", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then((res) => res.text()).then((json_str) => {
                 if (isJSON(json_str) === true) {
